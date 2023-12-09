@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+
+    <title>Modern Login Page | AsmrProg</title>
+
+</head>
+
+<body>
+
+    <div class="container" id="container">
+
+        <div class="form-container sign-up">
+
+            <form>
+
+                <h1>Create Account</h1>
+
+                <div class="social-icons">
+
+                    <a href="#" class="icon"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
+
+                </div>
+
+                <span>or use your email for registration</span>
+
+                <input type="text" placeholder="Name">
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Password">
+
+                <button type="submit" formaction="index.html">Sign Up</button>
+
+            </form>
+
+        </div>
+
+        <div class="form-container sign-in">
+
+            <form>
+
+                <h1>Sign In</h1>
+
+                <div class="social-icons">
+
+                    <a href="#" class="icon"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
+
+                </div>
+
+                <span>or use your email and password</span>
+
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Password">
+
+                <a href="#">Forget Your Password?</a>
+                <button type="submit" formaction="index.html">Sign Up</button>
+
+            </form>
+
+        </div>
+
+        <div class="toggle-container">
+
+            <div class="toggle">
+
+                <div class="toggle-panel toggle-left">
+
+                    <h1>Welcome Back!</h1>
+                    <p>Enter your personal details to use all site features</p>
+                    <button class="hidden" id="login">Sign In</button>
+
+                </div>
+
+                <div class="toggle-panel toggle-right">
+
+                    <h1>Hello, Friend!</h1>
+                    <p>Register with your personal details to use all site features</p>
+                    <button class="hidden" id="register">register</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- ... -->
+<script src="scriptlogin.js"></script>
+<style>
+    .error-message {
+        color: red;
+    }
+</style>
+
+
+<script>
+ document.addEventListener("DOMContentLoaded", function () {
+    const signInForm = document.querySelector(".sign-in form");
+    const signUpForm = document.querySelector(".sign-up form");
+
+    function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    function isNumber(value) {
+        return /^\d+$/.test(value);
+    }
+
+    function showError(element, message) {
+        const errorElement = document.createElement("span");
+        errorElement.className = "error-message";
+        errorElement.textContent = message;
+
+        element.parentNode.appendChild(errorElement);
+    }
+
+    function removeError(element) {
+        const errorElement = element.parentNode.querySelector(".error-message");
+        if (errorElement) {
+            element.parentNode.removeChild(errorElement);
+        }
+    }
+
+    function validateSignInForm() {
+        const emailInput = signInForm.querySelector('input[type="email"]');
+        const passwordInput = signInForm.querySelector('input[type="password"]');
+
+        removeError(emailInput);
+        removeError(passwordInput);
+
+        if (!emailInput.value.trim()) {
+            showError(emailInput, "Email is required");
+        } else if (!validateEmail(emailInput.value)) {
+            showError(emailInput, "Invalid email format");
+        }
+
+        if (!passwordInput.value.trim()) {
+            showError(passwordInput, "Password is required");
+        }
+
+        // Check for errors
+        const errors = signInForm.querySelectorAll('.error-message');
+        if (errors.length === 0) {
+            // No errors, redirect to index.html
+            window.location.href = 'index.html';
+        }
+    }
+
+    function validateSignUpForm() {
+        const nameInput = signUpForm.querySelector('input[type="text"]');
+        const emailInput = signUpForm.querySelector('input[type="email"]');
+        const passwordInput = signUpForm.querySelector('input[type="password"]');
+
+        removeError(nameInput);
+        removeError(emailInput);
+        removeError(passwordInput);
+
+        if (!nameInput.value.trim()) {
+            showError(nameInput, "Name is required");
+        } else if (isNumber(nameInput.value.trim())) {
+            showError(nameInput, "Name should not contain numbers");
+        }
+
+        if (!emailInput.value.trim()) {
+            showError(emailInput, "Email is required");
+        } else if (!validateEmail(emailInput.value)) {
+            showError(emailInput, "Invalid email format");
+        }
+
+        if (!passwordInput.value.trim()) {
+            showError(passwordInput, "Password is required");
+        }
+    }
+
+    signInForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        validateSignInForm();
+    });
+
+    signUpForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        // Kiểm tra xem có lỗi không
+        const nameInput = signUpForm.querySelector('input[type="text"]');
+        const emailInput = signUpForm.querySelector('input[type="email"]');
+        const passwordInput = signUpForm.querySelector('input[type="password"]');
+        let hasErrors = false;
+
+        if (!nameInput.value.trim()) {
+            showError(nameInput, "Name is required");
+            hasErrors = true;
+        } else if (isNumber(nameInput.value.trim())) {
+            showError(nameInput, "Name should not contain numbers");
+            hasErrors = true;
+        }
+
+        if (!emailInput.value.trim()) {
+            showError(emailInput, "Email is required");
+            hasErrors = true;
+        } else if (!validateEmail(emailInput.value)) {
+            showError(emailInput, "Invalid email format");
+            hasErrors = true;
+        }
+
+        if (!passwordInput.value.trim()) {
+            showError(passwordInput, "Password is required");
+            hasErrors = true;
+        }
+
+        if (!hasErrors) {
+            // Nếu không có lỗi, xử lý đăng ký thành công ở đây
+            alert("Đăng ký thành công!");
+            // Thêm logic xử lý đăng ký thành công theo yêu cầu của bạn
+        }
+        
+    });
+});
+
+
+</script>
+</body>
+</html>
